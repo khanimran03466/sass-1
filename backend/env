@@ -1,0 +1,6 @@
+PORT=5000
+DATABASE_URL="postgresql://postgres:password@localhost:5432/superapp?schema=public"
+JWT_SECRET="super_secret_key_123"
+RAZORPAY_KEY_ID="rzp_test_your_id"
+RAZORPAY_KEY_SECRET="your_razorpay_secret"
+RAZORPAY_WEBHOOK_SECRET="your_webhook_secret"

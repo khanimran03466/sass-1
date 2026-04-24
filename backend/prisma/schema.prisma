@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id                String              @id @default(uuid())
+  email             String              @unique
+  password          String
+  name              String?
+  role              String              @default("USER")
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  payments          Payment[]
+  landlords         Landlord[]
+}
+
+model Landlord {
+  id          String    @id @default(uuid())
+  name        String
+  bankName    String
+  accountNo   String
+  ifscCode    String
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  payments    Payment[]
+  createdAt   DateTime  @default(now())
+}
+
+model Payment {
+  id              String            @id @default(uuid())
+  orderId         String            @unique
+  paymentId       String?           @unique
+  amount          Float
+  status          String            @default("PENDING")
+  serviceType     String
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+  landlordId      String?
+  landlord        Landlord?         @relation(fields: [landlordId], references: [id])
+  
+  baseAmount      Float
+  platformFee     Float
+  gstAmount       Float
+  totalAmount     Float
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model WebhookLog {
+  id          String    @id @default(uuid())
+  event       String
+  payload     String
+  status      String
+  processedAt DateTime  @default(now())
+}
